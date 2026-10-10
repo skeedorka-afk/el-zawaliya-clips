@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="name" content="EL ZaWaLiYA-Clips">
+<meta name="robots" content="noindex, nofollow">
+<title>EL ZaWaLiYA-Clips — Ghost Uploads</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+  :root{
+    --bg:#040407; --panel:rgba(255,255,255,.025); --stroke:rgba(255,255,255,.07);
+    --txt:#dcdce6; --dim:#6a6a7d; --acc:#1fd0e8; --acc-dim:rgba(31,208,232,.1);
+    --danger:#e05c5c;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',system-ui,sans-serif}
+  body{background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden}
+  .aurora{position:fixed;inset:0;z-index:-2;overflow:hidden;background:radial-gradient(1100px 550px at 75% -10%,rgba(31,208,232,.05),transparent),radial-gradient(800px 450px at 8% 108%,rgba(31,208,232,.04),transparent)}
+  .bgmark{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:-1;opacity:.045;pointer-events:none;animation:slowspin 90s linear infinite}
+  @keyframes slowspin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+  .grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E")}
+
+  header{display:flex;justify-content:space-between;align-items:center;padding:20px 4vw;position:sticky;top:0;backdrop-filter:blur(14px);background:rgba(4,4,7,.75);border-bottom:1px solid var(--stroke);z-index:10}
+  .logo{display:flex;align-items:center;gap:12px;font-weight:800;font-size:1.1rem;letter-spacing:.5px}
+  .logo svg{filter:drop-shadow(0 0 10px rgba(31,208,232,.35))}
+  nav{display:flex;align-items:center;gap:18px}
+  nav a{color:var(--dim);text-decoration:none;font-size:.9rem;transition:color .2s}
+  nav a:hover{color:var(--txt)}
+  .userchip{display:none;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--stroke);padding:6px 12px 6px 6px;border-radius:999px;font-size:.82rem}
+  .userchip.show{display:flex}
+  .avatar{width:30px;height:30px;border-radius:50%;background:var(--acc);display:grid;place-items:center;font-weight:800;color:#03141a;font-size:.85rem}
+  .userchip .out{background:none;border:none;color:var(--danger);cursor:pointer;font-size:.8rem;margin-left:4px}
+
+  main{max-width:1100px;margin:0 auto;padding:48px 4vw 90px;position:relative;z-index:1}
+  .hero{text-align:center;margin-bottom:44px}
+  .badge{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--acc);border:1px solid rgba(31,208,232,.25);padding:6px 14px;border-radius:999px;margin-bottom:18px;background:var(--acc-dim)}
+  h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.1;color:var(--txt);letter-spacing:-1px}
+  .byline{margin-top:20px;font-size:.95rem;letter-spacing:3px;text-transform:uppercase;color:var(--dim)}
+  .scott{font-family:'Arial Black',Arial,sans-serif;font-size:1.8rem;letter-spacing:1px;text-transform:none;color:var(--txt);text-shadow:0 0 18px rgba(31,208,232,.4)}
+  .hero p{color:var(--dim);max-width:620px;margin:16px auto 0;font-size:1.02rem;line-height:1.6}
+  .hero p strong{color:var(--acc)}
+
+  .dropzone{margin-top:38px;border:2px dashed rgba(31,208,232,.3);border-radius:22px;padding:64px 24px;text-align:center;background:var(--panel);cursor:pointer;transition:.25s}
+  .dropzone:hover,.dropzone.over{border-color:var(--acc);box-shadow:0 0 60px rgba(31,208,232,.06) inset,0 0 40px rgba(31,208,232,.07);transform:translateY(-2px)}
+  .dropzone h3{margin:14px 0 6px;font-size:1.25rem}
+  .dropzone p{color:var(--dim);font-size:.88rem}
+  .dropzone .or{display:block;margin-top:14px;color:var(--acc);font-size:.8rem;letter-spacing:1px;text-transform:uppercase}
+  .dropzone.locked{opacity:.4;pointer-events:none}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+  .feat{padding:18px;border-radius:14px;background:rgba(255,255,255,.015);border:1px solid transparent;transition:.25s}
+  .feat:hover{border-color:var(--stroke);transform:translateY(-4px);background:rgba(255,255,255,.03)}
+  .feat .fi{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;background:var(--acc-dim);margin-bottom:12px}
+  .feat h4{font-size:.98rem;margin-bottom:6px}
+  .feat p{color:var(--dim);font-size:.82rem;line-height:1.5}
+  .feat code{color:var(--acc)}
+
+  h2.sec{margin:44px 0 18px;font-size:1.4rem;display:flex;align-items:center;gap:10px}
+  h2.sec .dot{width:9px;height:9px;border-radius:50%;background:var(--acc);box-shadow:0 0 14px var(--acc)}
+
+  .clip{display:flex;gap:16px;align-items:center;background:var(--panel);border:1px solid var(--stroke);border-radius:16px;padding:14px;margin-bottom:14px;animation:pop .4s cubic-bezier(.2,.9,.3,1.3)}
+  @keyframes pop{from{opacity:0;transform:scale(.94) translateY(10px)}}
+  .thumb{width:120px;height:68px;border-radius:10px;background:#000 url("") center/cover no-repeat;flex-shrink:0;border:1px solid var(--stroke);display:grid;place-items:center}
+  .thumb svg{opacity:.4}
+  .meta{flex:1;min-width:0}
+  .meta .name{font-weight:600;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .meta .sub{color:var(--dim);font-size:.78rem;margin-top:4px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .tag{font-size:.68rem;padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.05);color:var(--dim);border:1px solid var(--stroke)}
+  .tag.never{background:var(--acc-dim);color:var(--acc);border-color:rgba(31,208,232,.25)}
+  .actions{display:flex;gap:8px;flex-wrap:wrap}
+
+  /* tooltip */
+  .btn{position:relative;border:1px solid var(--stroke);background:rgba(255,255,255,.03);color:var(--txt);padding:8px 14px;border-radius:10px;font-size:.8rem;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:6px}
+  .btn:hover{background:rgba(255,255,255,.08);transform:translateY(-1px)}
+  .btn.primary{background:var(--acc);border:none;color:#03141a;font-weight:700;box-shadow:0 4px 18px rgba(31,208,232,.22)}
+  .btn.danger{color:#f0a5a5;border-color:rgba(224,92,92,.3)}
+  .btn.danger:hover{background:rgba(224,92,92,.1)}
+  .btn[data-tip]::after{
+    content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(4px);
+    background:#101018;border:1px solid var(--stroke);color:var(--txt);font-size:.72rem;padding:5px 10px;border-radius:8px;
+    white-space:nowrap;opacity:0;pointer-events:none;transition:.18s;z-index:20;box-shadow:0 8px 24px rgba(0,0,0,.6)
+  }
+  .btn[data-tip]::before{
+    content:'';position:absolute;bottom:calc(100% + 3px);left:50%;transform:translateX(-50%);
+    border:5px solid transparent;border-top-color:#101018;opacity:0;transition:.18s;z-index:20
+  }
+  .btn[data-tip]:hover::after,.btn[data-tip]:hover::before{opacity:1;transform:translateX(-50%) translateY(0)}
+  .btn svg{vertical-align:middle}
+
+  .linkrow{display:none;margin-top:8px;gap:8px;align-items:center}
+  .linkrow.show{display:flex}
+  .linkrow input{flex:1;background:rgba(0,0,0,.6);border:1px solid var(--stroke);border-radius:10px;padding:8px 12px;color:var(--acc);font-size:.8rem;font-family:monospace}
+
+  .empty{color:var(--dim);text-align:center;padding:36px;border:1px dashed var(--stroke);border-radius:16px;font-size:.9rem}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#0c0c12;border:1px solid var(--stroke);padding:12px 22px;border-radius:12px;font-size:.85rem;transition:.35s;opacity:0;z-index:60;box-shadow:0 10px 40px rgba(0,0,0,.6)}
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+  dialog{background:#0a0a10;color:var(--txt);border:1px solid var(--stroke);border-radius:18px;padding:0;width:min(640px,92vw);position:fixed;inset:0;margin:auto}
+  dialog::backdrop{background:rgba(0,0,0,.85);backdrop-filter:blur(6px)}
+  dialog video{width:100%;border-radius:18px 18px 0 0;background:#000;max-height:70vh}
+  .dfoot{padding:14px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:.85rem;color:var(--dim)}
+
+  .auth{width:min(400px,92vw);padding:32px 28px;text-align:center}
+  .auth .amark{width:56px;height:56px;margin:0 auto 14px;border-radius:16px;background:var(--acc-dim);display:grid;place-items:center;box-shadow:0 0 0 1px rgba(31,208,232,.2) inset}
+  .auth h3{font-size:1.3rem;margin-bottom:4px}
+  .auth .sub{color:var(--dim);font-size:.82rem;margin-bottom:20px;line-height:1.5}
+  .auth input{width:100%;background:rgba(0,0,0,.6);border:1px solid var(--stroke);border-radius:12px;padding:12px 14px;color:var(--txt);font-size:.9rem;margin-bottom:12px;outline:none;transition:.2s}
+  .auth input:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(31,208,232,.08)}
+  .auth .btn{width:100%;justify-content:center;padding:12px;font-size:.9rem}
+  .otp-row{display:flex;gap:8px;justify-content:center;margin-bottom:12px}
+  .otp-row input{width:44px;height:52px;text-align:center;font-size:1.3rem;font-weight:800;padding:0}
+  .auth .err{color:var(--danger);font-size:.78rem;min-height:1em;margin-bottom:8px}
+  .auth .alt{color:var(--dim);font-size:.78rem;margin-top:14px}
+  .auth .alt b{color:var(--acc);cursor:pointer}
+  .step{display:none}
+  .step.on{display:block;animation:pop .3s ease}
+
+  /* upload progress */
+  .upitem{background:var(--panel);border:1px solid var(--stroke);border-radius:14px;padding:14px 16px;margin-top:12px;animation:pop .3s ease}
+  .upitem .uphead{display:flex;justify-content:space-between;gap:10px;font-size:.82rem;margin-bottom:8px}
+  .upitem .upname{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--txt)}
+  .upitem .uppct{color:var(--acc);font-weight:700;font-variant-numeric:tabular-nums}
+  .upbar{height:7px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden;margin-bottom:8px}
+  .upbar .fill{height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,#0e7490,#1fd0e8);box-shadow:0 0 12px rgba(31,208,232,.5);transition:width .15s linear}
+  .upstats{display:flex;gap:16px;font-size:.74rem;color:var(--dim);font-variant-numeric:tabular-nums;flex-wrap:wrap}
+  .upstats b{color:var(--txt);font-weight:600}
+
+  footer{text-align:center;color:var(--dim);font-size:.78rem;padding:30px;border-top:1px solid var(--stroke)}
+  @media(max-width:640px){.clip{flex-wrap:wrap}.thumb{width:100%;height:140px}}
+</style>
+</head>
+<body>
+<div class="aurora"></div>
+
+<!-- giant background emblem -->
+<svg class="bgmark" width="900" height="900" viewBox="0 0 100 100" fill="none">
+  <polygon points="50,4 90,27 90,73 50,96 10,73 10,27" stroke="#1fd0e8" stroke-width="1.2"/>
+  <polygon points="50,14 81,32 81,68 50,86 19,68 19,32" stroke="#1fd0e8" stroke-width=".6" opacity=".6"/>
+  <path d="M56 24 L38 52 H50 L44 76 L64 44 H51 Z" fill="#1fd0e8" opacity=".9"/>
+</svg>
+
+<div class="grain"></div>
+
+<header>
+  <div class="logo">
+    <svg width="34" height="34" viewBox="0 0 100 100" fill="none">
+      <polygon points="50,6 86,27 86,73 50,94 14,73 14,27" stroke="#1fd0e8" stroke-width="7"/>
+      <path d="M58 26 L40 52 H52 L45 74 L62 46 H50 Z" fill="#1fd0e8"/>
+    </svg>
+    EL ZaWaLiYA-Clips
+  </div>
+  <nav>
+    <a href="#vault">My Vault</a>
+    <a href="#features">Features</a>
+    <div class="userchip" id="userchip">
+      <span class="avatar" id="avatar">?</span>
+      <span id="uname"></span>
+      <button class="out" onclick="signOut()">Sign out</button>
+    </div>
+    <button class="btn primary" id="authBtn" onclick="authDialog.showModal()">Sign in</button>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1fd0e8" stroke-width="2.4"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+      Zero limits · Unlisted by design
+    </div>
+    <h1>Upload clips.<br>Share by link. Forget the rest.</h1>
+    <div class="byline">developed by <span class="scott">SCOTT</span></div>
+    <p>Built specifically for the <strong>EL ZaWaLiYA Old ScHooL server</strong> — the official clip vault of the crew. Every video format accepted. No size cap. No expiry dates. Each member gets a private account with their own vault, invisible to search engines and reachable only by the secret links they hand out.</p>
+
+    <div class="dropzone locked" id="dz" onclick="lockedCheck()">
+      <svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#1fd0e8" stroke-width="1.3"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M2 9h20M2 15h20M7 4v16M17 4v16"/></svg>
+      <h3 id="dzTitle" style="margin-top:14px">Sign in to start uploading</h3>
+      <p>MP4 · MKV · AVI · MOV · WEBM · GIF · and literally anything else</p>
+      <span class="or">— locked —</span>
+    </div>
+    <div id="upQueue"></div>
+    <input type="file" id="fileInput" hidden multiple accept="video/*,.mkv,.avi,.mov,.flv,.wmv,.m4v,.3gp,.ts,.mpg,.gif">
+  </section>
+
+  <section id="features">
+    <h2 class="sec"><span class="dot"></span>Why EL ZaWaLiYA-Clips</h2>
+    <div class="grid">
+      <div class="feat"><div class="fi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1fd0e8" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><h4>Private accounts</h4><p>Sign in with Gmail + confirmation code. Every member gets their own personal vault — only you see your records.</p></div>
+      <div class="feat"><div class="fi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1fd0e8" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 9h4M3 15h4M17 9h4M17 15h4"/></svg></div><h4>Every format</h4><p>No transcode walls. Raw footage, screen recordings, phone clips — all welcome.</p></div>
+      <div class="feat"><div class="fi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1fd0e8" stroke-width="1.8"><path d="M18.2 8.5a4 4 0 1 1 0 7M5.8 15.5a4 4 0 1 1 0-7"/><path d="M8 12h8"/></svg></div><h4>No size limit</h4><p>Upload a 10-second meme or a 10-hour VOD. The vault doesn't flinch.</p></div>
+      <div class="feat"><div class="fi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1fd0e8" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div><h4>Never expires</h4><p>No 30-day purges, no "link will die soon" emails. Years from now, it still plays.</p></div>
+      <div class="feat"><div class="fi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1fd0e8" stroke-width="1.8"><path d="M3 3l18 18M10.6 5.1A9.8 9.8 0 0 1 12 5c7 0 10 7 10 7a17 17 0 0 1-3.1 4M6.6 6.6A16.4 16.4 0 0 0 2 12s3 7 10 7c1.5 0 2.9-.3 4.1-.8"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg></div><h4>Unlisted & hidden</h4><p><code>noindex</code> enforced, unguessable link IDs — search engines can't find your clips.</p></div>
+      <div class="feat"><div class="fi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1fd0e8" stroke-width="1.8"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></div><h4>Instant secret links</h4><p>One click copies a private link. Share it anywhere — only holders can watch.</p></div>
+      <div class="feat"><div class="fi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1fd0e8" stroke-width="1.8"><circle cx="8" cy="15" r="4"/><path d="M10.9 12.1 21 2M15 8l3 3M18 5l2 2"/></svg></div><h4>You hold the keys</h4><p>Delete any clip permanently whenever you want. Full control stays with the uploader.</p></div>
+    </div>
+  </section>
+
+  <section id="vault">
+    <h2 class="sec"><span class="dot"></span>My Vault <span id="count" style="color:var(--dim);font-size:.85rem;font-weight:400"></span></h2>
+    <div id="clips"></div>
+  </section>
+</main>
+
+<dialog id="player"><video id="pv" controls autoplay></video><div class="dfoot"><span id="pvName"></span><button class="btn" onclick="player.close()">Close</button></div></dialog>
+
+<dialog id="authDialog">
+  <div class="auth">
+    <div class="amark">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1fd0e8" stroke-width="1.8"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+    </div>
+    <div class="step on" id="step1">
+      <h3>Sign in to your vault</h3>
+      <p class="sub">Enter your Gmail address — we'll email you a confirmation code.</p>
+      <input type="email" id="emailIn" placeholder="you@gmail.com" autocomplete="email">
+      <div class="err" id="err1"></div>
+      <button class="btn primary" id="sendBtn" onclick="sendCode()">Send code</button>
+      <p class="alt">Members of the <b>EL ZaWaLiYA Old ScHooL</b> server only</p>
+    </div>
+    <div class="step" id="step2">
+      <h3>Check your email</h3>
+      <p class="sub">We sent a 6-digit confirmation code to <b id="codeEmail"></b>. It may take a minute to arrive.</p>
+      <div class="otp-row">
+        <input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric">
+        <input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric">
+      </div>
+      <div class="err" id="err2"></div>
+      <button class="btn primary" onclick="verifyCode()">Verify & Enter</button>
+      <p class="alt">Wrong email? <b onclick="backToEmail()">Go back</b> · <b onclick="sendCode(true)">Resend code</b></p>
+    </div>
+  </div>
+</dialog>
+
+<div class="toast" id="toastEl"></div>
+
+<script>
+/* ============================================================
+   EMAIL SETUP (required for real code delivery):
+   1. Create a free account at https://www.emailjs.com
+   2. Add your Gmail under "Email Services" -> copy the SERVICE ID
+   3. Create an "Email Templates" with these variables in the body:
+        To: {{to_email}}
+        Subject: Your EL ZaWaLiYA-Clips code
+        Body: Your confirmation code is: {{code}}
+   4. Copy the TEMPLATE ID and your PUBLIC KEY below.
+   ============================================================ */
+const EMAILJS_CFG = {
+  publicKey : 'sudvmuVAI4XpDYMqC',
+  serviceId : 'service_bimmak6',
+  templateId: 'template_m69ljy4'
+};
+
+if(EMAILJS_CFG.publicKey !== 'YOUR_PUBLIC_KEY') emailjs.init({ publicKey: EMAILJS_CFG.publicKey });
+
+const $ = id => document.getElementById(id);
+const dz = $('dz'), fi = $('fileInput'), clipsEl = $('clips'), countEl = $('count'),
+      player = $('player'), pv = $('pv'), authDialog = $('authDialog'), toastEl = $('toastEl');
+let DB = [], USER = null, pending = {};
+
+const IC = {
+  play:'<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5-13-7.5z"/></svg>',
+  link:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>',
+  pen:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3l4 4L8 20l-5 1 1-5L17 3z"/></svg>',
+  dl:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>',
+  del:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>',
+  copy:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>',
+  film:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1fd0e8" stroke-width="1.6"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M7 4v16M17 4v16"/></svg>'
+};
+
+function toast(msg){ toastEl.textContent = msg; toastEl.classList.add('show'); clearTimeout(toastEl._t); toastEl._t = setTimeout(()=>toastEl.classList.remove('show'),2600); }
+function genId(){ return Array.from(crypto.getRandomValues(new Uint8Array(6))).map(b=>b.toString(16).padStart(2,'0')).join(''); }
+function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+function fmtSize(b){ if(b>1e9) return (b/1e9).toFixed(1)+' GB'; if(b>1e6) return (b/1e6).toFixed(1)+' MB'; if(b>1e3) return (b/1e3).toFixed(0)+' KB'; return b+' B'; }
+function clipUrl(id){ return location.origin + location.pathname + '#clip=' + id; }
+
+/* ================= AUTH ================= */
+function sendCode(resend){
+  const email = $('emailIn').value.trim().toLowerCase();
+  const err = $('err1');
+  if(!/^[\w.+-]+@gmail\.com$/i.test(email)){ err.textContent = 'Please enter a valid Gmail address (@gmail.com)'; return; }
+  if(EMAILJS_CFG.publicKey === 'YOUR_PUBLIC_KEY'){ err.textContent = 'Email service not configured yet — see the note at the top of the code'; return; }
+  err.textContent = '';
+  const btn = $('sendBtn'); btn.disabled = true; btn.textContent = 'Sending…';
+  const code = String(Math.floor(100000 + Math.random()*900000));
+  emailjs.send(EMAILJS_CFG.serviceId, EMAILJS_CFG.templateId, { to_email: email, code: code, app_name: 'EL ZaWaLiYA-Clips' })
+    .then(() => {
+      pending = { email, code };
+      $('codeEmail').textContent = email;
+      $('step1').classList.remove('on'); $('step2').classList.add('on');
+      document.querySelectorAll('.otp-row input').forEach(i => i.value = '');
+      document.querySelector('.otp-row input').focus();
+      toast('Code sent — check your inbox (and spam folder)');
+    })
+    .catch(e => { err.textContent = 'Failed to send email: ' + (e.text || 'check your EmailJS setup'); })
+    .finally(() => { btn.disabled = false; btn.textContent = 'Send code'; });
+}
+function backToEmail(){ $('step2').classList.remove('on'); $('step1').classList.add('on'); }
+
+document.querySelectorAll('.otp-row input').forEach((inp, idx, arr) => {
+  inp.addEventListener('input', () => {
+    inp.value = inp.value.replace(/\D/g,'');
+    if(inp.value && idx < 5) arr[idx+1].focus();
+    if(arr.every(i => i.value)) verifyCode();
+  });
+  inp.addEventListener('keydown', e => { if(e.key==='Backspace' && !inp.value && idx>0) arr[idx-1].focus(); });
+});
+
+function verifyCode(){
+  const entered = [...document.querySelectorAll('.otp-row input')].map(i => i.value).join('');
+  const err = $('err2');
+  if(entered !== pending.code){ err.textContent = 'Wrong code — check your email and try again'; return; }
+  err.textContent = '';
+  login(pending.email);
+  authDialog.close();
+}
+
+function login(email){
+  USER = email;
+  localStorage.setItem('cv_user', email);
+  DB = JSON.parse(localStorage.getItem('cv_db_' + btoa(email)) || '[]');
+  $('userchip').classList.add('show');
+  $('avatar').textContent = email[0].toUpperCase();
+  $('uname').textContent = email.split('@')[0];
+  $('authBtn').style.display = 'none';
+  dz.classList.remove('locked');
+  $('dzTitle').textContent = 'Drop your clip here';
+  dz.querySelector('.or').textContent = '— or click to browse —';
+  dz.onclick = () => fi.click();
+  render();
+  toast(`Welcome back, ${email.split('@')[0]} — your vault is unlocked`);
+}
+
+function signOut(){
+  USER = null; DB = [];
+  localStorage.removeItem('cv_user');
+  $('userchip').classList.remove('show');
+  $('authBtn').style.display = '';
+  dz.classList.add('locked');
+  $('dzTitle').textContent = 'Sign in to start uploading';
+  dz.querySelector('.or').textContent = '— locked —';
+  dz.onclick = lockedCheck;
+  render();
+  toast('Signed out — vault sealed');
+}
+function lockedCheck(){ if(!USER){ authDialog.showModal(); toast('Sign in to upload clips'); } }
+function save(){ localStorage.setItem('cv_db_' + btoa(USER), JSON.stringify(DB)); render(); }
+
+/* ================= UPLOAD ================= */
+fi.addEventListener('change', e => handleFiles([...e.target.files]));
+['dragover','dragenter'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('over'); }));
+['dragleave','drop'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('over'); }));
+dz.addEventListener('drop', e => handleFiles([...e.dataTransfer.files]));
+
+async function handleFiles(files){
+  if(!USER) return lockedCheck();
+  for(const f of files){
+    await uploadWithProgress(f);
+  }
+  save();
+}
+
+function uploadWithProgress(file){
+  return new Promise(resolve => {
+    const id = 'up' + genId();
+    const q = $('upQueue');
+    const item = document.createElement('div');
+    item.className = 'upitem';
+    item.innerHTML = `
+      <div class="uphead"><span class="upname">${esc(file.name)}</span><span class="uppct" id="${id}-pct">0%</span></div>
+      <div class="upbar"><div class="fill" id="${id}-fill"></div></div>
+      <div class="upstats">
+        <span>⏱ ETA: <b id="${id}-eta">calculating…</b></span>
+        <span>⚡ Speed: <b id="${id}-spd">—</b></span>
+        <span>📦 <b id="${id}-done">0 B</b> / ${fmtSize(file.size)}</span>
+        <span>📶 Network: <b id="${id}-net">measuring…</b></span>
+      </div>`;
+    q.prepend(item);
+
+    const fill=$(id+'-fill'), pct=$(id+'-pct'), eta=$(id+'-eta'), spd=$(id+'-spd'),
+          done=$(id+'-done'), net=$(id+'-net');
+    const t0 = performance.now();
+    let loaded = 0, lastT = t0, lastL = 0, speed = 0;
+    const netType = (navigator.connection && navigator.connection.effectiveType) || '—';
+
+    const reader = file.stream().getReader();
+    const pump = () => reader.read().then(({done, value}) => {
+      if(done){
+        pct.textContent = '100%'; fill.style.width = '100%';
+        done.textContent = fmtSize(file.size);
+        spd.textContent = fmtSpeed(speed);
+        eta.textContent = 'done';
+        net.textContent = netType;
+        setTimeout(() => { item.style.transition = '.5s'; item.style.opacity = '0';
+          setTimeout(() => item.remove(), 500); }, 900);
+        finishUpload(file).then(resolve);
+        return;
+      }
+      loaded += value.length;
+      const now = performance.now(), dt = (now - lastT) / 1000;
+      if(dt >= 0.25){
+        speed = (loaded - lastL) / dt;               /* bytes/sec */
+        lastT = now; lastL = loaded;
+      }
+      const p = Math.min(100, loaded / file.size * 100);
+      fill.style.width = p + '%';
+      pct.textContent = p.toFixed(0) + '%';
+      done.textContent = fmtSize(loaded);
+      spd.textContent = fmtSpeed(speed);
+      net.textContent = netType;
+      if(speed > 0 && p < 100){
+        const secs = (file.size - loaded) / speed;
+        eta.textContent = fmtETA(secs);
+      } else eta.textContent = 'calculating…';
+      pump();
+    }).catch(() => { item.remove(); resolve(); });
+    pump();
+  });
+}
+
+function fmtSpeed(bps){
+  if(!bps) return '—';
+  if(bps > 1e9) return (bps/1e9).toFixed(2) + ' GB/s';
+  if(bps > 1e6) return (bps/1e6).toFixed(1) + ' MB/s';
+  if(bps > 1e3) return (bps/1e3).toFixed(0) + ' KB/s';
+  return bps.toFixed(0) + ' B/s';
+}
+function fmtETA(secs){
+  if(!isFinite(secs) || secs < 0) return '—';
+  if(secs < 60) return secs.toFixed(1) + 's';
+  const m = Math.floor(secs/60), s = Math.round(secs%60);
+  if(m < 60) return m + 'm ' + s + 's';
+  const h = Math.floor(m/60);
+  return h + 'h ' + (m%60) + 'm';
+}
+
+async function finishUpload(file){
+  const url = URL.createObjectURL(file);
+  let thumb = '';
+  try{ thumb = await makeThumb(url); }catch(_){}
+  DB.unshift({ id:genId(), name:file.name, size:file.size, type:file.type||'video/*', url, thumb, ts:Date.now() });
+  toast(`"${file.name}" locked in your vault`);
+}
+
+function makeThumb(url){
+  return new Promise((res,rej)=>{
+    const v = document.createElement('video');
+    v.muted = true; v.src = url; v.currentTime = 0.5;
+    v.onloadeddata = () => setTimeout(()=>{
+      const c = document.createElement('canvas'); c.width=320; c.height=180;
+      c.getContext('2d').drawImage(v,0,0,320,180); res(c.toDataURL('image/jpeg',.75));
+    },120);
+    v.onerror = rej;
+  });
+}
+
+/* ================= RENDER ================= */
+function render(){
+  if(!USER){
+    countEl.textContent = '';
+    clipsEl.innerHTML = '<div class="empty">Sign in with your Gmail to access your personal vault.</div>';
+    return;
+  }
+  countEl.textContent = DB.length ? `· ${DB.length} clip${DB.length>1?'s':''} · ${USER}` : '';
+  if(!DB.length){ clipsEl.innerHTML = '<div class="empty">Your vault is empty — drop a clip above to begin.</div>'; return; }
+  clipsEl.innerHTML = '';
+  DB.forEach(c => {
+    const el = document.createElement('div'); el.className = 'clip';
+    el.innerHTML = `
+      <div class="thumb" ${c.thumb ? 'style="background-image:url('+c.thumb+')"' : ''}>${c.thumb ? '' : IC.film}</div>
+      <div class="meta">
+        <div class="name">${esc(c.name)}</div>
+        <div class="sub"><span>${fmtSize(c.size)}</span><span>${new Date(c.ts).toLocaleDateString()}</span><span class="tag never">never expires</span><span class="tag">unlisted</span></div>
+        <div class="linkrow" id="lr-${c.id}"><input readonly value="${clipUrl(c.id)}"><button class="btn primary" data-tip="Copy the secret link to your clipboard" onclick="copyLink('${c.id}')">${IC.copy} Copy</button></div>
+      </div>
+      <div class="actions">
+        <button class="btn primary" data-tip="Play this clip in the built-in player" onclick="play('${c.id}')">${IC.play} Play</button>
+        <button class="btn" data-tip="Show or hide the secret shareable link" onclick="toggleLink('${c.id}')">${IC.link} Link</button>
+        <button class="btn" data-tip="Rename this clip" onclick="renameClip('${c.id}')">${IC.pen}</button>
+        <button class="btn" data-tip="Download the original file to your device" onclick="dl('${c.id}')">${IC.dl}</button>
+        <button class="btn danger" data-tip="Permanently delete this clip from your vault" onclick="del('${c.id}')">${IC.del} Delete</button>
+      </div>`;
+    clipsEl.appendChild(el);
+  });
+}
+
+/* ================= ACTIONS ================= */
+function toggleLink(id){ $('lr-'+id).classList.toggle('show'); }
+async function copyLink(id){
+  const url = clipUrl(id);
+  try{ await navigator.clipboard.writeText(url); }catch(_){
+    const t=document.createElement('textarea'); t.value=url; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove();
+  }
+  toast('Secret link copied — share it wisely');
+}
+function play(id){
+  const c = DB.find(x=>x.id===id);
+  if(!c) return toast('Clip not found in your vault');
+  $('pvName').textContent = c.name;
+  pv.src = c.url; player.showModal();
+}
+player.addEventListener('close', ()=>{ pv.pause(); pv.removeAttribute('src'); pv.load(); });
+function renameClip(id){
+  const c = DB.find(x=>x.id===id);
+  const n = prompt('Rename clip:', c.name);
+  if(n && n.trim()){ c.name = n.trim(); save(); toast('Renamed'); }
+}
+function dl(id){
+  const c = DB.find(x=>x.id===id);
+  const a = document.createElement('a'); a.href = c.url; a.download = c.name; a.click();
+  toast('Download started');
+}
+function del(id){
+  const c = DB.find(x=>x.id===id);
+  if(!confirm(`Permanently delete "${c.name}"? This cannot be undone.`)) return;
+  URL.revokeObjectURL(c.url);
+  DB = DB.filter(x=>x.id!==id); save(); toast('Clip permanently deleted');
+}
+
+if(location.hash.startsWith('#clip=')){
+  const id = location.hash.slice(6);
+  setTimeout(()=>{ if(USER){ const c = DB.find(x=>x.id===id); if(c) play(id); else toast('Clip not found in your vault'); } }, 400);
+}
+
+const savedUser = localStorage.getItem('cv_user');
+if(savedUser) login(savedUser); else render();
+</script>
+
+<footer>EL ZaWaLiYA-Clips · the official vault of the EL ZaWaLiYA Old ScHooL server</footer>
+</body>
+</html>
